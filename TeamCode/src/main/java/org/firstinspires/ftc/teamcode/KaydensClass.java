@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.content.Context;
+import android.hardware.SensorManager;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -9,6 +12,7 @@ import org.firstinspires.ftc.robotcore.external.android.AndroidAccelerometer;
 import org.firstinspires.ftc.robotcore.external.android.AndroidGyroscope;
 import org.firstinspires.ftc.robotcore.external.android.AndroidOrientation;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.listeners.MyAndroidSensorListener;
 
 @TeleOp
 public class KaydensClass extends LinearOpMode {
@@ -31,6 +35,14 @@ public class KaydensClass extends LinearOpMode {
        telemetry.update();
 
         double tgtPower = 0;
+
+        waitForStart();
+
+        SensorManager sensorService = (SensorManager) hardwareMap.appContext.getSystemService(Context.SENSOR_SERVICE);
+
+        MyAndroidSensorListener myFIRSTlistener = new MyAndroidSensorListener(sensorService,this.telemetry);
+
+        myFIRSTlistener.onResume();
 
         while (opModeIsActive()) {
            tgtPower = -this.gamepad1.left_stick_y;
@@ -61,6 +73,7 @@ public class KaydensClass extends LinearOpMode {
 
            telemetry.update();
        }
+        myFIRSTlistener.onPause();
     }
 
 }

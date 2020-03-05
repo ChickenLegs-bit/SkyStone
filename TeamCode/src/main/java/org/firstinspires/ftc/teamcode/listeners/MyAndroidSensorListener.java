@@ -20,8 +20,12 @@ public class MyAndroidSensorListener implements SensorEventListener {
         this.accelorometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
     }
 
-    public void OnResume(){
+    public void onResume(){
         sensorManager.registerListener(this,accelorometer,SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    public void onPause() {
+        sensorManager.unregisterListener(this);
     }
 
 
@@ -30,13 +34,16 @@ public class MyAndroidSensorListener implements SensorEventListener {
         float motionX = sensorEvent.values[0];
         float motionY = sensorEvent.values[1];
         float motionZ = sensorEvent.values[2];
+
         telemetry.addData("X velocity", motionX);
         telemetry.addData("Y velocity", motionY);
         telemetry.addData("Z velocity", motionZ);
+        telemetry.update();
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
 
     }
+
 }
